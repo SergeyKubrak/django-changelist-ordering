@@ -1,0 +1,2 @@
+recursive-include changelist_ordering/static *
+recursive-include changelist_ordering/templates *
