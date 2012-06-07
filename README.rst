@@ -3,6 +3,15 @@
 Usage
 ===============
 
+settings.py
+-------
+::
+
+    INSTALLED_APPS = (
+        ...
+        'changelist_ordering',
+    )
+
 model.py
 -------
 ::
@@ -19,7 +28,7 @@ admin.py
 ::
 
     from django.contrib import admin
-    from changelist_ordering import ChangeListOrdering
+    from changelist_ordering.admin import ChangeListOrdering
 
     class ExampleAdmin(ChangeListOrdering):
         ordering = ('order',)
