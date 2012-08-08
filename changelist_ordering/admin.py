@@ -11,13 +11,6 @@ class ChangeListOrdering(admin.ModelAdmin):
 
         self.list_display = list(self.list_display)
 
-        if 'indented_short_title' not in self.list_display:
-            if self.list_display[0] == 'action_checkbox':
-                self.list_display[1] = 'indented_short_title'
-            else:
-                self.list_display[0] = 'indented_short_title'
-        self.list_display_links = ('indented_short_title',)
-
         self.change_list_template = [
             'changelist_ordering.html',
             ]
@@ -44,33 +37,9 @@ class ChangeListOrdering(admin.ModelAdmin):
 
         return super(ChangeListOrdering, self).changelist_view(request, extra_context, *args, **kwargs)
 
-    def indented_short_title(self, item):
-        """
-        Generate a short title for an object, indent it depending on
-        the object's depth in the hierarchy.
-        """
-        r = ''
-        if hasattr(item, 'get_absolute_url'):
-            r = '<input type="hidden" class="medialibrary_file_path" value="%s" id="_refkey_%d" />' % (
-                item.get_absolute_url(),
-                item.id
-                )
-
-        r += '<span id="page_marker-%d" class="page_marker">&nbsp;</span>&nbsp;' % (
-            item.id)
-
-        if hasattr(item, 'short_title'):
-            r += item.short_title()
-        else:
-            r += unicode(item)
-
-        return mark_safe(r)
-
-    indented_short_title.short_description = _('title')
-    indented_short_title.allow_tags = True
 
     def _actions_column(self, instance):
-        return ['<div class="drag_handle"></div>',]
+        return ['<span id="page_marker-%d" class="page_marker">&nbsp;</span>&nbsp;<div class="drag_handle"></div>'% instance.id,]
 
     def actions_column(self, instance):
             return u' '.join(self._actions_column(instance))
